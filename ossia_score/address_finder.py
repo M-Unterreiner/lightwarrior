@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import re
+import operator
 
 
 with open("test.score", "r") as f:
@@ -60,23 +61,43 @@ def get_level_of_key(key: str):
     #return re.search('[(.*)]', key)
 
 
+def remove_paranthesis_from_string(element : str):
+    return re.sub('\[|\]|0|1|2|3|4|5|6|7|8|9', '', element)
+
+
 def cast_level_to_int(level):
     return int(level)
 
 
+def delete_item_number_from_path(path: list, item_number):
+    path.pop(item_number)
+    return path
+
+
+def reduce(function, iterable, initializer=None):
+    it = iter(iterable)
+    if initializer is None:
+        value = next(it)
+    else:
+        value = initializer
+    for element in it:
+        if not contains_value_paranthesis(element):
+            value = function(value, element)
+            print(element)
+        else:
+            level = get_level_of_key(element)
+            new_element = remove_paranthesis_from_string(element)
+            print(new_element)
+    return value
+
+
+def getFromDict(dataDict, mapList):
+    return reduce(operator.getitem, mapList, dataDict)
+
+
 def get_json_object_at_path(json_object, path):
-    """
-    Retrieve the JSON object at the given path.
-
-    :param json_object: The JSON data (can be a dictionary or list).
-    :param path: The path to the desired JSON object (e.g., "address.city" or "courses[0].name").
-    :return: The JSON object at the given path, or None if the path is invalid.
-    """
     keys = path.split(".")
-
-    print(json_object["Document"]["BaseScenario"]["Constraint"]["Metadata"]["ScriptingName"])
-
-
+    return getFromDict(json_object, keys)
 
 
 def contains_value_paranthesis(value):
@@ -93,8 +114,7 @@ searched_value = "Kaleidoscope"
 
 
 occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
-print(occurences[0])
-#print(contains_value_paranthesis("Processes[0]"))
-#print(contains_value_paranthesis("Processes"))
 
-get_json_object_at_path(boli_score, occurences[0])
+
+# print(get_json_object_at_path(boli_score, occurences[1]))
+print(get_json_object_at_path(boli_score, occurences[10]))

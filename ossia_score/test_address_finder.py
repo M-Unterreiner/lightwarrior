@@ -34,6 +34,14 @@ class TestGetJsonObjectAtPath(unittest.TestCase):
 
 
 
+class TestGetJsonObjectAtPath(unittest.TestCase):
+    def test_reduce_path(self):
+        path = "Document.BaseScenario.Constraint.Metadata.ScriptingName"
+        path_dict = path.split(".")
+        length_of_dict = len(path_dict)
+        new_length_of_dict = len(address_finder.delete_item_number_from_path(path_dict, 0))
+        self.assertEqual(new_length_of_dict, length_of_dict - 1)
+
 class TestContainsValueParanthesis(unittest.TestCase):
     def test_no_parenthesis(self):
         self.assertFalse(address_finder.contains_value_paranthesis("Processes"))
