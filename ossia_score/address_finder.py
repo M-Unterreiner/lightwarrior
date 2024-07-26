@@ -62,7 +62,7 @@ def get_level_of_key(key: str):
 
 
 def remove_paranthesis_from_string(element : str):
-    return re.sub('\[|\]|0|1|2|3|4|5|6|7|8|9', '', element)
+    return re.sub(r'[|]|0|1|2|3|4|5|6|7|8|9', '', element)
 
 
 def cast_level_to_int(level):
@@ -73,17 +73,31 @@ def delete_item_number_from_path(path: list, item_number):
     path.pop(item_number)
     return path
 
+def concenate_list(path : list) -> str:
+    new_string = ""
+    for x in range(len(path)):
+        if not x == len(path):
+            new_string = new_string + path[x] + "."
+    return new_string
+
 
 def get_json_object_at_path(json_object, path):
     keys = path.split(".")
+    current = json_object
 
     for key in keys:
+        if len(key) == 0:
+            return key
         if not contains_value_paranthesis(key):
-            print(key)
+            keys.remove(key)
+            new_path = concenate_list(keys)
+            get_json_object_at_path(current, new_path)
         else:
-            level = get_level_of_key(key)
-            new_string = remove_paranthesis_from_string(key)
-            print(new_string, " has level ", level)
+            return key
+            # level = get_level_of_key(key)
+            # new_string = remove_paranthesis_from_string(key)
+            # print(new_string, " has level ", level)
+
 
 def contains_value_paranthesis(value):
     return "[" in value
