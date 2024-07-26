@@ -2,7 +2,7 @@
 import json
 
 
-with open("boli.score", "r") as f:
+with open("test.score", "r") as f:
     # Load the JSON json_object
     boli_score = json.load(f)
 
@@ -27,30 +27,29 @@ def search_in_json_for_key(json_obj, key):
     return None
 
 
-def find_key_occurrences(json_object, key_to_find, path=""):
+def get_path_of_occurrences(data, key_to_find, path=""):
     """
-    Recursively search for all occurrences of a specific key in a JSON object.
+    Recursively search for all occurrences of a specific key in dictionary.
 
-    :param json_object: The JSON data (can be a dictionary or list).
+    :param data: The data (can be a dictionary or list).
     :param key_to_find: The key to search for.
-    :param path: The current path in the JSON structure.
+    :param path: The current path in the data structure.
     :return: A list of paths where the key is found.
     """
     occurrences = []
 
-    if isinstance(json_object, dict):
-        for k, v in json_object.items():
+    if isinstance(data, dict):
+        for k, v in data.items():
             new_path = f"{path}.{k}" if path else k
             if k == key_to_find:
                 occurrences.append(new_path)
-            occurrences.extend(find_key_occurrences(v, key_to_find, new_path))
-    elif isinstance(json_object, list):
-        for i, item in enumerate(json_object):
+            occurrences.extend(get_path_of_occurrences(v, key_to_find, new_path))
+    elif isinstance(data, list):
+        for i, item in enumerate(data):
             new_path = f"{path}[{i}]"
-            occurrences.extend(find_key_occurrences(item, key_to_find, new_path))
+            occurrences.extend(get_path_of_occurrences(item, key_to_find, new_path))
 
     return occurrences
-
 
 
 def get_json_object_at_path(json_object, path):
@@ -66,12 +65,10 @@ def get_json_object_at_path(json_object, path):
 
     for key in keys:
         if isinstance(current, dict) and key in current:
-            print(key, " was found")
             current = current[key]
         elif isinstance(current, list) and key.isdigit() and int(key) < len(current):
             current = current[int(key)]
         else:
-            print(find_last_path(keys, current))
             return None
 
     return current
@@ -90,6 +87,6 @@ searched_value = "Kaleidoscope"
 # print(get_json_object_at_path(boli_score, occurrences[0]))
 
 
-print(find_key_occurrences(boli_score, key_to_find, path=""))
+print(get_path_of_occurrences(boli_score, key_to_find, path=""))
 #print(contains_value_paranthesis("Processes[0]"))
 #print(contains_value_paranthesis("Processes"))
