@@ -74,30 +74,8 @@ def delete_item_number_from_path(path: list, item_number):
     return path
 
 
-def reduce(function, iterable, initializer=None):
-    it = iter(iterable)
-    if initializer is None:
-        value = next(it)
-    else:
-        value = initializer
-    for element in it:
-        if not contains_value_paranthesis(element):
-            value = function(value, element)
-            print(element)
-        else:
-            level = get_level_of_key(element)
-            new_element = remove_paranthesis_from_string(element)
-            print(new_element)
-    return value
-
-
-def getFromDict(dataDict, mapList):
-    return reduce(operator.getitem, mapList, dataDict)
-
-
 def get_json_object_at_path(json_object, path):
     keys = path.split(".")
-    return getFromDict(json_object, keys)
 
 
 def contains_value_paranthesis(value):
