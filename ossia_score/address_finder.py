@@ -60,6 +60,8 @@ def get_level_of_key(key: str):
     #return re.search('[(.*)]', key)
 
 
+
+
 def get_json_object_at_path(json_object, path):
     """
     Retrieve the JSON object at the given path.
@@ -73,7 +75,7 @@ def get_json_object_at_path(json_object, path):
 
     for key in keys:
         if contains_value_paranthesis(key):
-            print("Item contains nested list")
+            level = get_level_of_key(key)
         if isinstance(current, dict) and key in current:
             current = current[key]
         elif isinstance(current, list) and key.isdigit() and int(key) < len(current):
