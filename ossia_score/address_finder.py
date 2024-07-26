@@ -52,11 +52,6 @@ def find_key_occurrences(json_object, key_to_find, path=""):
     return occurrences
 
 
-def concenate_path(path, last_item_number):
-    new_string = ""
-    for x in range(len(path)):
-        new_string = new_string + path[x]
-
 
 def get_json_object_at_path(json_object, path):
     """
