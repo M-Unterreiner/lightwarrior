@@ -77,6 +77,13 @@ def delete_item_number_from_path(path: list, item_number):
 def get_json_object_at_path(json_object, path):
     keys = path.split(".")
 
+    for key in keys:
+        if not contains_value_paranthesis(key):
+            print(key)
+        else:
+            level = get_level_of_key(key)
+            new_string = remove_paranthesis_from_string(key)
+            print(new_string, " has level ", level)
 
 def contains_value_paranthesis(value):
     return "[" in value
