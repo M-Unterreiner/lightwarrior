@@ -1,0 +1,102 @@
+{
+                    "uuid": "74ca45ff-92c9-44a0-8f1a-754dea05ee1b",
+                    "ObjectName": "gfxProcess",
+                    "id": 16,
+                    "Metadata": {
+                      "ScriptingName": "Kaleido",
+                      "Comment": "",
+                      "Color": "Transparent1",
+                      "Label": "",
+                      "Touched": true
+                    },
+                    "Duration": 12377150852,
+                    "Height": 300.0,
+                    "StartOffset": 0,
+                    "LoopDuration": 12377150852,
+                    "Pos": [
+                      605.1806360367677,
+                      -3.3249710552237275
+                    ],
+                    "Size": [
+                      115.890625,
+                      99.0
+                    ],
+                    "Loops": false,
+                    "Vertex": "",
+                    "Fragment": "/*{\n    \"CATEGORIES\": [\n        \"Kaleid\",\n        \"Stylize\"\n    ],\n    \"CREDIT\": \"by VIDVOX\",\n    \"INPUTS\": [\n        {\n            \"NAME\": \"inputImage\",\n            \"TYPE\": \"image\"\n        },\n        {\n            \"DEFAULT\": 6,\n            \"MAX\": 32,\n            \"MIN\": 1,\n            \"NAME\": \"sides\",\n            \"TYPE\": \"float\"\n        },\n        {\n            \"DEFAULT\": 0,\n            \"MAX\": 1,\n            \"MIN\": -1,\n            \"NAME\": \"angle\",\n            \"TYPE\": \"float\"\n        },\n        {\n            \"DEFAULT\": 0,\n            \"MAX\": 1,\n            \"MIN\": 0,\n            \"NAME\": \"slidex\",\n            \"TYPE\": \"float\"\n        },\n        {\n            \"DEFAULT\": 0,\n            \"MAX\": 1,\n            \"MIN\": 0,\n            \"NAME\": \"slidey\",\n            \"TYPE\": \"float\"\n        },\n        {\n            \"DEFAULT\": [\n                0,\n                0\n            ],\n            \"MAX\": [\n                1,\n                1\n            ],\n            \"MIN\": [\n                0,\n                0\n            ],\n            \"NAME\": \"center\",\n            \"TYPE\": \"point2D\"\n        }\n    ],\n    \"ISFVSN\": \"2\"\n}\n*/\n\n\nconst float tau = 6.28318530718;\n\n\n\n\nvoid main() {\n  // normalize to the center\n\tvec2 loc = RENDERSIZE * vec2(isf_FragNormCoord[0],isf_FragNormCoord[1]);\n\tfloat r = distance(center*RENDERSIZE, loc);\n\tfloat a = atan ((loc.y-center.y*RENDERSIZE.y),(loc.x-center.x*RENDERSIZE.x));\n\t\n\t// kaleidoscope\n\ta = mod(a, tau/sides);\n\ta = abs(a - tau/sides/2.);\n\t\n\tloc.x = r * cos(a + tau * angle);\n\tloc.y = r * sin(a + tau * angle);\n\t\n\tloc = (center*RENDERSIZE + loc) / RENDERSIZE;\n\t\n\tloc.x = mod(loc.x + slidex, 1.0);\n\tloc.y = mod(loc.y + slidey, 1.0);\n\n\t// sample the image\n\tif (loc.x < 0.0)\t{\n\t\tloc.x = mod(abs(loc.x), 1.0);\n\t}\n\tif (loc.y < 0.0)\t{\n\t\tloc.y = mod(abs(loc.y),1.0);\n\t}\n\tif (loc.x > 1.0)\t{\n\t\tloc.x = mod(abs(1.0-loc.x),1.0);\n\t}\n\tif(loc.y > 1.0)\t{\n\t\tloc.y = mod(abs(1.0-loc.y),1.0);\t\n\t}\n\tgl_FragColor = IMG_NORM_PIXEL(inputImage, loc);;\n}",
+                    "Inlets": [
+                      {
+                        "uuid": "5ac86198-2d03-4830-9e41-a6d529922d29",
+                        "ObjectName": "Inlet",
+                        "id": 0,
+                        "Hidden": false
+                      },
+                      {
+                        "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925",
+                        "ObjectName": "Inlet",
+                        "id": 1,
+                        "Hidden": true,
+                        "Custom": "sides",
+                        "Exposed": "sides",
+                        "Address": "osc (boli):/artnet/ch/26",
+                        "Value": {
+                          "Float": 12.973099708557129
+                        },
+                        "Domain": {
+                          "Float": {
+                            "Min": 1.0,
+                            "Max": 32.0
+                          }
+                        }
+                      },
+                      {
+                        "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925",
+                        "ObjectName": "Inlet",
+                        "id": 2,
+                        "Hidden": true,
+                        "Custom": "angle",
+                        "Exposed": "angle",
+                        "Value": {
+                          "Float": 0.0
+                        },
+                        "Domain": {
+                          "Float": {
+                            "Min": -1.0,
+                            "Max": 1.0
+                          }
+                        }
+                      },
+                      {
+                        "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925",
+                        "ObjectName": "Inlet",
+                        "id": 3,
+                        "Hidden": true,
+                        "Custom": "slidex",
+                        "Exposed": "slidex",
+                        "Value": {
+                          "Float": 0.33476388454437256
+                        },
+                        "Domain": {
+                          "Float": {
+                            "Min": 0.0,
+                            "Max": 1.0
+                          }
+                        }
+                      },
+                      {
+                        "uuid": "af2b4fc3-aecb-4c15-a5aa-1c573a239925",
+                        "ObjectName": "Inlet",
+                        "id": 4,
+                        "Hidden": true,
+                        "Custom": "slidey",
+                        "Exposed": "slidey",
+                        "Value": {
+                          "Float": 0.3014305531978607
+                        },
+                        "Domain": {
+                          "Float": {
+                            "Min": 0.0,
+                            "Max": 1.0
+                          }
+                        }
+                      },
