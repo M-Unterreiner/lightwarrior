@@ -58,14 +58,6 @@ def concenate_path(path, last_item_number):
         new_string = new_string + path[x]
 
 
-def find_last_path(path, current):
-    print("find_last_path:", path)
-    for x in range(len(path)):
-        if path[x] == current:
-            return concenate_path(path, x)
-    return "Path not found"
-
-
 def get_json_object_at_path(json_object, path):
     """
     Retrieve the JSON object at the given path.
