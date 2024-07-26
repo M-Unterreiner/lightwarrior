@@ -106,6 +106,19 @@ def contains_value_paranthesis(value):
     return "[" in value
 
 
+# Search the json file for all occurences of a scriptname
+def search_keys_in_json_value(json, key, value):
+    occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
+
+    pathes = []
+
+    for x in range(len(occurences)):
+        name = get_json_object_at_path(boli_score, occurences[x])
+        if (name == searched_value):
+            pathes.append(occurences[x])
+    return pathes
+
+
 # Key to search for
 key_to_find = "ScriptingName"
 searched_value = "Kaleidoscope"
@@ -113,13 +126,11 @@ searched_value = "Kaleidoscope"
 # Find all occurrences of the key
 # print(get_json_object_at_path(boli_score, occurrences[0]))
 
-occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
 
 # print(get_json_object_at_path(boli_score, occurences[1]))
-number = 3
-print(occurences[number])
+#number = 3
+#print(occurences[numer])
 
-path = get_json_object_at_path(boli_score, occurences[number])
 #Document.BaseScenario.Constraint.Processes[0].States[2].Metadata.ScriptingName
 #print(boli_score["Document"]["BaseScenario"]["Constraint"]["Processes"][0]["States"][2])
 
@@ -127,8 +138,15 @@ path = get_json_object_at_path(boli_score, occurences[number])
 #print(boli_score["Document"]["BaseScenario"]["Constraint"]["Processes"][0]["TimeNodes"][2]["Metadata"])
 
 
+pathes = search_keys_in_json_value(boli_score, key_to_find, searched_value)
+print(pathes[0])
+
+print(boli_score["Document"]["BaseScenario"]["Constraint"]["Processes"][0]["Constraints"][1]["Processes"][1]["Inlets"][1])#["Metadata"])#["ScriptingName"])
+#for path in pathes:
+#    print(path)
+
 # Print the JSON object
-if path is not None:
-    print(json.dumps(path, indent=4))
-else:
-    print(f"Path '{occurences[number]}' is invalid.")
+# if path is not None:
+#     print(json.dumps(path, indent=4))
+# else:
+#     print(f"Path '{occurences[number]}' is invalid.")
