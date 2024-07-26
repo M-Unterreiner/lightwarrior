@@ -90,12 +90,18 @@ def get_json_object_at_path(json_object, path):
     return current
 
 
+def contains_value_paranthesis(value):
+    return "[" in value
+
+
 # Key to search for
-key_to_find = "Address"
+key_to_find = "ScriptingName"
+searched_value = "Kaleidoscope"
 
+print(search_in_json_for_key(boli_score, key_to_find))
 # Find all occurrences of the key
-occurrences = find_key_occurrences(boli_score, key_to_find)
 
-print(occurrences[0])
 # print(get_json_object_at_path(boli_score, occurrences[0]))
-print(get_json_object_at_path(boli_score, "Document.BaseScenario.Constraint.Processes[0].Inlets[0].Address"))
+
+#print(contains_value_paranthesis("Processes[0]"))
+#print(contains_value_paranthesis("Processes"))
