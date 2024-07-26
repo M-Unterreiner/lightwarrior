@@ -62,7 +62,7 @@ def get_level_of_key(key: str):
 
 
 def remove_paranthesis_from_string(element : str):
-    return re.sub(r'[|]|0|1|2|3|4|5|6|7|8|9', '', element)
+    return re.sub('\[|\]|0|1|2|3|4|5|6|7|8|9', '', element)
 
 
 def cast_level_to_int(level):
@@ -72,6 +72,7 @@ def cast_level_to_int(level):
 def delete_item_number_from_path(path: list, item_number):
     path.pop(item_number)
     return path
+
 
 def concenate_list(path : list) -> str:
     new_string = ""
@@ -86,17 +87,19 @@ def get_json_object_at_path(json_object, path):
     current = json_object
 
     for key in keys:
-        if len(key) == 0:
-            return key
-        if not contains_value_paranthesis(key):
-            keys.remove(key)
-            new_path = concenate_list(keys)
-            get_json_object_at_path(current, new_path)
+        if contains_value_paranthesis(key):
+            level = get_level_of_key(key)
+            cleaned_key = remove_paranthesis_from_string(key)
+            if cleaned_key in current and isinstance(current[cleaned_key], list) and int(level) < len(current[cleaned_key]):
+                current = current[cleaned_key][int(level)]
+            else:
+                return None
+        elif isinstance(current, dict) and key in current:
+            current = current[key]
         else:
-            return key
-            # level = get_level_of_key(key)
-            # new_string = remove_paranthesis_from_string(key)
-            # print(new_string, " has level ", level)
+            return None
+
+    return current
 
 
 def contains_value_paranthesis(value):
@@ -108,12 +111,24 @@ key_to_find = "ScriptingName"
 searched_value = "Kaleidoscope"
 
 # Find all occurrences of the key
-
 # print(get_json_object_at_path(boli_score, occurrences[0]))
-
 
 occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
 
-
 # print(get_json_object_at_path(boli_score, occurences[1]))
-print(get_json_object_at_path(boli_score, occurences[10]))
+number = 3
+print(occurences[number])
+
+path = get_json_object_at_path(boli_score, occurences[number])
+#Document.BaseScenario.Constraint.Processes[0].States[2].Metadata.ScriptingName
+#print(boli_score["Document"]["BaseScenario"]["Constraint"]["Processes"][0]["States"][2])
+
+#["States"][2]["Metadata"])
+#print(boli_score["Document"]["BaseScenario"]["Constraint"]["Processes"][0]["TimeNodes"][2]["Metadata"])
+
+
+# Print the JSON object
+if path is not None:
+    print(json.dumps(path, indent=4))
+else:
+    print(f"Path '{occurences[number]}' is invalid.")
