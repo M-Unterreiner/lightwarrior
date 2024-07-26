@@ -98,10 +98,11 @@ def contains_value_paranthesis(value):
 key_to_find = "ScriptingName"
 searched_value = "Kaleidoscope"
 
-print(search_in_json_for_key(boli_score, key_to_find))
 # Find all occurrences of the key
 
 # print(get_json_object_at_path(boli_score, occurrences[0]))
 
+
+print(find_key_occurrences(boli_score, key_to_find, path=""))
 #print(contains_value_paranthesis("Processes[0]"))
 #print(contains_value_paranthesis("Processes"))
