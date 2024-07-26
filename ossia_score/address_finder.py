@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import re
 
 
 with open("test.score", "r") as f:
@@ -52,6 +53,13 @@ def get_path_of_occurrences(data, key_to_find, path=""):
     return occurrences
 
 
+# Returns NoneType object, when no paranthesis are found
+def get_level_of_key(key: str):
+    match = re.search(r'\[(\d+)\]', key)
+    return match.group(1)
+    #return re.search('[(.*)]', key)
+
+
 def get_json_object_at_path(json_object, path):
     """
     Retrieve the JSON object at the given path.
@@ -64,6 +72,8 @@ def get_json_object_at_path(json_object, path):
     current = json_object
 
     for key in keys:
+        if contains_value_paranthesis(key):
+            print("Item contains nested list")
         if isinstance(current, dict) and key in current:
             current = current[key]
         elif isinstance(current, list) and key.isdigit() and int(key) < len(current):
@@ -87,6 +97,7 @@ searched_value = "Kaleidoscope"
 # print(get_json_object_at_path(boli_score, occurrences[0]))
 
 
-print(get_path_of_occurrences(boli_score, key_to_find, path=""))
+occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
+print(get_json_object_at_path(boli_score, occurences[1]))
 #print(contains_value_paranthesis("Processes[0]"))
 #print(contains_value_paranthesis("Processes"))

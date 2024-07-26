@@ -4,6 +4,12 @@ import unittest
 import address_finder
 import json
 
+class TestGetLevelOfKey(unittest.TestCase):
+    def test_get_level(self):
+        key = "Processes[0]"
+        level = address_finder.get_level_of_key(key)
+
+        self.assertEqual(level, "0")
 
 class TestKeyOccurrences(unittest.TestCase):
     def test_test_score(self):
