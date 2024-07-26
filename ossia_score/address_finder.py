@@ -60,6 +60,8 @@ def get_level_of_key(key: str):
     #return re.search('[(.*)]', key)
 
 
+def cast_level_to_int(level):
+    return int(level)
 
 
 def get_json_object_at_path(json_object, path):
@@ -71,19 +73,10 @@ def get_json_object_at_path(json_object, path):
     :return: The JSON object at the given path, or None if the path is invalid.
     """
     keys = path.split(".")
-    current = json_object
 
-    for key in keys:
-        if contains_value_paranthesis(key):
-            level = get_level_of_key(key)
-        if isinstance(current, dict) and key in current:
-            current = current[key]
-        elif isinstance(current, list) and key.isdigit() and int(key) < len(current):
-            current = current[int(key)]
-        else:
-            return None
+    print(json_object["Document"]["BaseScenario"]["Constraint"]["Metadata"]["ScriptingName"])
 
-    return current
+
 
 
 def contains_value_paranthesis(value):
@@ -100,6 +93,8 @@ searched_value = "Kaleidoscope"
 
 
 occurences = get_path_of_occurrences(boli_score, key_to_find, path="")
-print(get_json_object_at_path(boli_score, occurences[1]))
+print(occurences[0])
 #print(contains_value_paranthesis("Processes[0]"))
 #print(contains_value_paranthesis("Processes"))
+
+get_json_object_at_path(boli_score, occurences[0])
